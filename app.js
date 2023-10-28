@@ -11,6 +11,17 @@ const port = 3000;
 
 app.use(requestIp.mw());
 
+app.use(async (req, res, next) => {
+    try {
+      const response = await axios.get('https://api.ipify.org?format=json');
+      const userIp = response.data.ip;
+      req.userIp = userIp;
+      next();
+    } catch (error) {
+      next(error);
+    }
+});
+// app.set('trust proxy', true)
 app.get('/', (req, res) => {
     res.redirect('/home')
 });
@@ -21,18 +32,8 @@ const sendAPIRequest = async (ipAddress) => {
 }
 
 app.get('/home', async (req, res) => {
-    const ipAddress = IP.address();
-    const ipAddressInformation = await sendAPIRequest(ipAddress);
-    console.log(ipAddressInformation, ipAddress)
-    try {
-        const response = await axios.get('https://api.ipify.org?format=json');
-        const clientIP = response.data.ip;
-        console.log(clientIP);
-        res.json({ clientIP });
-    } catch (error) {
-        console.error('Failed to fetch client IP address:', error);
-        res.status(500).json({ error: 'Failed to fetch IP address' });
-        }
+    console.log(req.userIp)
+    res.sendFile(__dirname + '/home.html')
 });
 
 app.listen(port, () => {
