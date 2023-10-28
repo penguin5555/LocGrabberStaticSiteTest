@@ -12,22 +12,22 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-    console.log(req.clientIp)
+    console.log(req.ip)
     res.sendFile(__dirname + '/home.html');
     
-    const ipAddressService = 'https://ifconfig.me/ip';
+    // const ipAddressService = 'https://ifconfig.me/ip';
 
-    request(ipAddressService, (error, response, body) => {
-      if (!error && response.statusCode === 200) {
-        const publicIP = body.trim();
-        console.log('Gottem')
-        console.log('Your public IP address is:', publicIP);
+    // request(ipAddressService, (error, response, body) => {
+    //   if (!error && response.statusCode === 200) {
+    //     const publicIP = body.trim();
+    //     console.log('Gottem')
+    //     console.log('Your public IP address is:', publicIP);
         
         
-      } else {
-        console.error('Failed to fetch public IP address:', error);
-      }
-    });
+    //   } else {
+    //     console.error('Failed to fetch public IP address:', error);
+    //   }
+    // });
 
 });
 
