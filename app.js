@@ -1,6 +1,7 @@
 const express = require('express');
 const requestIp = require('request-ip');
 const app = express();
+const axios = require('axios');
 const request = require('request');
 
 const port = 3000;
@@ -11,26 +12,20 @@ app.get('/', (req, res) => {
     res.redirect('/home')
 });
 
-app.get('/home', (req, res) => {
-    console.log(req.ip)
-    res.sendFile(__dirname + '/home.html');
+app.get('/home', async (req, res) => {
     
-    // const ipAddressService = 'https://ifconfig.me/ip';
+    
+    try {
+        const response = await axios.get('https://api.ipify.org?format=json');
+        const clientIP = response.data.ip;
+        console.log(clientIP);
+        res.json({ clientIP });
+    } catch (error) {
+        console.error('Failed to fetch client IP address:', error);
+        res.status(500).json({ error: 'Failed to fetch IP address' });
+        }
+    });
 
-    // request(ipAddressService, (error, response, body) => {
-    //   if (!error && response.statusCode === 200) {
-    //     const publicIP = body.trim();
-    //     console.log('Gottem')
-    //     console.log('Your public IP address is:', publicIP);
-        
-        
-    //   } else {
-    //     console.error('Failed to fetch public IP address:', error);
-    //   }
-    // });
-
-});
-
-app.listen(port, '0.0.0.0', () => {
+app.listen(port, () => {
     console.log("Server running!")
 });
