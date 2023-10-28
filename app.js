@@ -32,8 +32,8 @@ const sendAPIRequest = async (ipAddress) => {
 }
 
 app.get('/home', async (req, res) => {
-    console.log(req.userIp)
-    console.log(req.clientIp)
+    // console.log(req.userIp)
+    console.log(req.clientIp)  // only works when being hosted on server
     res.sendFile(__dirname + '/home.html')
 });
 
