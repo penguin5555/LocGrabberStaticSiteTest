@@ -33,7 +33,10 @@ const sendAPIRequest = async (ipAddress) => {
 
 app.get('/home', async (req, res) => {
     // console.log(req.userIp)
-    console.log(req.clientIp)  // only works when being hosted on server
+    foundClientIp = req.clientIp
+    if (foundClientIp !== '216.144.248.27') {
+        console.log(foundClientIp)  // only works when being hosted on server
+    }
     res.sendFile(__dirname + '/home.html')
 });
 
